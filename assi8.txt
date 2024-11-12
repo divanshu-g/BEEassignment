@@ -1,0 +1,16 @@
+db.students.aggregate([
+    {
+        $lookup: {
+            from: "courses",
+            localField: "course_id",
+            foreignField: "_id",
+            as: "course"
+        }
+    },
+    {
+        $project: {
+            "student_name": "$name",
+            "course_name": { $arrayElemAt: ["$course.course_name", 0] }
+        }
+    }
+])
